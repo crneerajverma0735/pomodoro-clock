@@ -7,8 +7,8 @@ class PomodoroClock extends Component {
         this.state = {
             breakTime: 5,
             sessionTime: 25,
-            minutes: 0,
-            seconds: 5,
+            minutes: 25,
+            seconds: 0,
             timerStatus: false,
             interval: "",
             label: "Session",
@@ -19,7 +19,7 @@ class PomodoroClock extends Component {
 
 
     decrementBreak = () => {
-
+        if (this.state.timeWorking) return;
         if (this.state.breakTime <= 1) return;
         this.setState((prevState) => ({
             breakTime: prevState.breakTime - 1
@@ -32,7 +32,7 @@ class PomodoroClock extends Component {
 
 
     incrementBreak = () => {
-
+        if (this.state.timeWorking) return;
         if (this.state.breakTime >= 60) return;
         this.setState((prevState) => ({
             breakTime: prevState.breakTime + 1
@@ -59,7 +59,7 @@ class PomodoroClock extends Component {
     }
 
     decrementSession = () => {
-
+        if (this.state.timeWorking) return;
         if (this.state.sessionTime <= 1) return;
         this.setState((prevState) => ({
             sessionTime: prevState.sessionTime - 1
@@ -67,7 +67,7 @@ class PomodoroClock extends Component {
     }
 
     incrementSession = () => {
-
+        if (this.state.timeWorking) return;
         if (this.state.sessionTime >= 60) return;
         this.setState((prevState) => ({
             sessionTime: prevState.sessionTime + 1
@@ -243,10 +243,16 @@ class PomodoroClock extends Component {
                 {/* Timer */}
                 < div className="col-12 col-md-9 col-lg-6 pt-4 timer" >
                     <div className="col-11 text-center mx-auto">
-                        <h3 className="text-center m-0 p-0" id="timer-label">{this.state.label}</h3>
+                        <h3 className="text-center m-0 p-0" id="timer-label"
+                            style={this.state.minutes === 0 ? { "color": "red" } : { "color": "white" }}
+                        >
+                            {this.state.label}
+                        </h3>
                     </div>
                     <div className="col-11 text-center mx-auto">
-                        <h1 className="timerCount" id="time-left">
+                        <h1 className="timerCount" id="time-left"
+                            style={this.state.minutes === 0 ? { "color": "red" } : { "color": "white" }}
+                        >
                             {(parseInt(this.state.minutes, 10) + 100).toString().substr(1)}:{(parseInt(this.state.seconds, 10) + 100).toString().substr(1)}
                         </h1>
                         <audio id="beep" preload="auto" src="https://raw.githubusercontent.com/freeCodeCamp/cdn/master/build/testable-projects-fcc/audio/BeepSound.wav"></audio>
